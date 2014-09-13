@@ -1,0 +1,11 @@
+{
+	"sql":
+	{
+		"_comments":"chose `pgsql` or `mysql` as driver",
+		"driver":"mysql",
+		"host":"localhost",
+		"user":"",
+		"password":"",
+		"database":"gallery"
+	}
+}
