@@ -20,9 +20,9 @@
 				$gallery_content = scandir($value);
 				// if gallery folder not contains `thumbs` folder
 				if($this->isThumbsExist($gallery_content)){
-					if ($this->metadata($gallery_content)) { // if gallery folder not contains metadata.txt
+					if ($this->metadata($gallery_content)) { // if gallery folder contains metadata.txt
 						$this->newGalleryTxt($value);
-					}elseif ($this->metadataJson($gallery_content)) { // if gallery folder not contains metadata.json
+					}elseif ($this->metadataJson($gallery_content)) { // if gallery folder contains metadata.json
 						$this->newGalleryJson($value);
 					}else{
 						$this->newGallery($value);
