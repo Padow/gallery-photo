@@ -1,12 +1,15 @@
 # Gallery Photo
 
 This is a web photo gallery.
+You can edit the name and info of the galleries and photos, as you wish.
+It allow users to send comments on your pics.
+Site admin can remove some comments, if they are inappropriate
 
 ## Demo
 [http://padow.livehost.fr](http://padow.livehost.fr)
 
 ## Version
-1.0
+1.1.0
 
 ## Tech
 
@@ -22,7 +25,7 @@ Gallery Photo uses a number of open source projects to work properly:
 ## Server requirements
 * PHP 5.3
 * Apache 2.2
-* MySQL 5
+* MySQL 5 or PostreSQL 9 
 
 > Also tested with Nginx 1.2.1 and MariaDB 10.1
 
@@ -68,6 +71,8 @@ You can remove, or add a pic into a gallery, the database will automatically be 
 
 With the admin tools you can modify title/subtitle of each galleries, likewise for each pics.
 
+Pics and galleries informations can be pre-set with the [mgn-meta project] tool.
+
 
 
 ## Remove gallery
@@ -87,3 +92,4 @@ Just delete the folder from the FTP
 [Bootstrap-file-input]:https://github.com/grevory/bootstrap-file-input
 [CKEditor]:http://ckeditor.com/
 [Blueimp Gallery]:https://github.com/blueimp/Gallery
+[mgn-meta project]:https://github.com/Fragan/mgn-meta
