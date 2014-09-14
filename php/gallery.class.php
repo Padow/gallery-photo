@@ -18,8 +18,15 @@
 			$this->check_galleries($gallery_list);
 			foreach ($gallery_list as $key => $value) {
 				$gallery_content = scandir($value);
+				// if gallery folder not contains `thumbs` folder
 				if($this->isThumbsExist($gallery_content)){
-					$this->newGallery($value);
+					if ($this->metadata($gallery_content)) { // if gallery folder not contains metadata.txt
+						$this->newGalleryTxt($value);
+					}elseif ($this->metadataJson($gallery_content)) { // if gallery folder not contains metadata.json
+						$this->newGalleryJson($value);
+					}else{
+						$this->newGallery($value);
+					}
 				}
 				$this->checkPic($value, $key);
 			}
@@ -154,6 +161,9 @@
 			
 		}
 
+		/**
+			add gallery without metadata
+		*/
 
 		public function isThumbsExist($gallery_content){
 			return !in_array('thumbs', $gallery_content);	
@@ -253,6 +263,11 @@
 			}
 		}
 
+		/**
+		* remove pics info from BDD 
+		* and remove thumbnail of the pics
+		*/
+
 		public function removePic($id, $link){
 			$sql_del_com = $this->_connexion->prepare("DELETE FROM comments WHERE pics = :id");
 			$sql_del_com-> bindParam('id', $id, PDO::PARAM_INT);
@@ -266,6 +281,146 @@
 			if(file_exists($thumb_link))
 				unlink($thumb_link);
 
+		}
+
+
+		/**
+			 metadata part
+		*/
+
+		/**
+			set metadata in bdd Txt way
+		*/
+
+		public function metadata($gallery_content){
+			return in_array('metadata.txt', $gallery_content);	
+		}
+
+		public function newGalleryTxt($file){
+			$info = file($file.'/metadata.txt');
+			foreach ($info as $value) {
+					$lines = preg_split("/\n/", $value, null);
+					$lines_utf8[] = utf8_encode($lines[0]);
+			}
+			$lines_utf8 = array_filter($lines_utf8);
+
+			$title_line = preg_split("/\|/", $lines_utf8[0], -1, PREG_SPLIT_NO_EMPTY);
+			if (($title_line[0] == "title") && (isset($title_line[1]))) {
+				$title_line = explode("@", $title_line[1]);
+				$folder_name = preg_split("/\//", $file);
+				$folder_name = $folder_name[1];	
+				$gallery_title = (isset($title_line[0]))?(htmlspecialchars($title_line[0], ENT_QUOTES)):(htmlspecialchars($folder_name, ENT_QUOTES));
+				$gallery_subtitle = (isset($title_line[1]))?(htmlspecialchars($title_line[1], ENT_QUOTES)):"";
+			}else{
+				$gallery_title = preg_split("/\//", $file);
+				$gallery_title = htmlspecialchars($gallery_title[1], ENT_QUOTES);
+				$gallery_subtitle = "";
+				$folder_name = $gallery_title;
+			}
+
+			$this->insertGallery($folder_name, $gallery_title, $gallery_subtitle);
+			$id = $this->getGalleryId($folder_name);
+			$this->addPicturesTxt($file, $lines_utf8, $id);
+		}
+
+		public function getPictureMetatdata($lines_utf8){
+			$metadata = array();
+			foreach ($lines_utf8 as $key => $value) {
+				$split = preg_split("/\|/", $value, -1, PREG_SPLIT_NO_EMPTY);
+				if (((isset($split)) || ($split[0] != "title")) && (isset($split[1]))) {
+					$metadata[$split[0]] = $split[1];
+				}		
+			}
+			return $metadata;
+		}
+
+		public function addPicturesTxt($dir, $lines_utf8, $id){
+			
+			$gallery_pictures = $this->getAllPics($dir);
+
+			// if pictures name from folder exist in metadata
+			// name and metadata are add to the array
+			// if not exist name is add
+			$metadata = $this->getPictureMetatdata($lines_utf8);
+			$pics_to_add = array();
+			foreach ($gallery_pictures as $value) {
+				$pics_to_add[$value] = (array_key_exists($value, $metadata))?$metadata[$value]:$value.'::';
+			}
+			
+			// insert in BDD pics name and data
+			foreach ($pics_to_add as $key => $value) {
+				$link = $dir.'/'.$key;
+				$thumb_dir = $dir.'/thumbs';
+				$thumb = $thumb_dir.'/'.$key;
+				$escape_value = htmlspecialchars($value, ENT_QUOTES);
+				$this->createThumbnail($key, $dir.'/', $thumb_dir );
+				$split = preg_split("/::/", $escape_value, -1, PREG_SPLIT_NO_EMPTY);
+				$pic_title = (isset($split[0]))?$split[0]:$key;
+				$pic_subtitle = (isset($split[1]))?$split[1]:"";
+				$this->insertPics($id, $pic_title, $pic_subtitle, $link, $thumb);
+			}
+
+			unlink($dir.'/metadata.txt');
+
+
+		}
+
+		/**
+			set metadata in bdd Json way
+		*/
+
+		public function metadataJson($gallery_content){
+			return in_array('metadata.json', $gallery_content);	
+		}
+
+		public function newGalleryJson($file){
+			$path = $file.'/metadata.json';
+			$info = json_decode(utf8_encode(file_get_contents($path)));
+			$title = htmlspecialchars($info->{'title'}, ENT_QUOTES);
+			$subtitle = htmlspecialchars($info->{'description'}, ENT_QUOTES);
+			$folder_name = preg_split("/\//", $file);
+			$folder_name = $folder_name[1];
+			if($title == ""){
+				$title = $folder_name;
+			}
+
+			$this->insertGallery($folder_name, $title, $subtitle);
+			$id = $this->getGalleryId($folder_name);
+			$this->addPicturesJson($file, $info->{'images'}, $id);
+		}
+
+		public function addPicturesJson($dir, $images, $id){
+			$gallery_pictures = $this->getAllPics($dir);
+
+			foreach ($images as $key => $value) {
+				$array[$value->{'filename'}]['title'] = $value->{'title'};
+				$array[$value->{'filename'}]['subtitle'] = $value->{'description'};
+			}
+
+			$pics_to_add = array();
+			foreach ($gallery_pictures as $value) {
+				if (array_key_exists($value, $array)) {
+					$pics_to_add[$value]['title'] = htmlspecialchars($array[$value]['title'], ENT_QUOTES);
+					$pics_to_add[$value]['subtitle'] = htmlspecialchars($array[$value]['subtitle'], ENT_QUOTES);
+					if ($pics_to_add[$value]['title'] == "") {
+						$pics_to_add[$value]['title'] = htmlspecialchars($value, ENT_QUOTES);
+					}
+				}else{
+					$pics_to_add[$value]['title'] = htmlspecialchars($value, ENT_QUOTES);
+					$pics_to_add[$value]['subtitle'] = "";
+				}
+			}
+
+			foreach ($pics_to_add as $key => $value) {
+				$link = $dir.'/'.$key;
+				$thumb_dir = $dir.'/thumbs';
+				$thumb = $thumb_dir.'/'.$key;
+				$this->createThumbnail($key, $dir.'/', $thumb_dir );
+				$this->insertPics($id, $value['title'], $value['subtitle'], $link, $thumb);
+			}
+
+			unlink($dir.'/metadata.json');
+			
 		}
 
 	}
