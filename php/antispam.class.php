@@ -16,14 +16,9 @@ Class Antispam extends Connexion{
 			$timeSecond = strtotime($date);
 			$interval = $timeSecond - $timeFirst;
 
-			if ($interval>20){
-				return True;
-			}
+			return $interval>20;
 		}
 
 
 }
-
-
 ?>
-
