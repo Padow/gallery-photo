@@ -244,7 +244,7 @@
 			}
 
 			if(empty($folderpics)){
-				// $this->deleteGallery($folder);
+				$this->deleteGallery($folder);
 				$this->delTree("photos/".$folder);
 			}
 
