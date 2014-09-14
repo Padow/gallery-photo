@@ -44,6 +44,7 @@
 		public function getAllPics($dir){
 			$gallery_content = scandir($dir);
 			$regex = "/\.(bmp|tiff|png|gif|jpe?g)$/";
+			$gallery_pictures = array();
 			foreach ($gallery_content as $value) {
 				if (preg_match($regex, $value)) {
 					$gallery_pictures[] = $value;
@@ -101,25 +102,29 @@
 			foreach ($rows as $key => $value) {
 				$folder = 'photos/'.$value['folder'];
 				if (!in_array($folder, $gallery_list)) {
-					$sql_get_id = $this->_connexion->prepare("SELECT id FROM galleries WHERE folder = :folder");
-					$sql_get_id-> bindParam('folder', $value['folder'], PDO::PARAM_STR);
-					$sql_get_id-> execute();
-					$rows = $sql_get_id->fetchAll(PDO::FETCH_ASSOC);
-					$id = $rows[0]['id'];
-
-					$sql_del_com = $this->_connexion->prepare("DELETE FROM comments WHERE gallery = :id");
-					$sql_del_com-> bindParam('id', $id, PDO::PARAM_INT);
-					$sql_del_com-> execute();
-
-					$sql_del_pic = $this->_connexion->prepare("DELETE FROM pictures WHERE gallery = :id");
-					$sql_del_pic-> bindParam('id', $id, PDO::PARAM_INT);
-					$sql_del_pic-> execute();
-
-					$sql_del_gal = $this->_connexion->prepare("DELETE FROM galleries WHERE folder = :folder");
-					$sql_del_gal-> bindParam('folder', $value['folder'], PDO::PARAM_STR);
-					$sql_del_gal-> execute();
+					$this->deleteGallery($value['folder']);
 				}
 			}
+		}
+
+		public function deleteGallery($folder_name){
+			$sql_get_id = $this->_connexion->prepare("SELECT id FROM galleries WHERE folder = :folder");
+			$sql_get_id-> bindParam('folder', $folder_name, PDO::PARAM_STR);
+			$sql_get_id-> execute();
+			$rows = $sql_get_id->fetchAll(PDO::FETCH_ASSOC);
+			$id = $rows[0]['id'];
+
+			$sql_del_com = $this->_connexion->prepare("DELETE FROM comments WHERE gallery = :id");
+			$sql_del_com-> bindParam('id', $id, PDO::PARAM_INT);
+			$sql_del_com-> execute();
+
+			$sql_del_pic = $this->_connexion->prepare("DELETE FROM pictures WHERE gallery = :id");
+			$sql_del_pic-> bindParam('id', $id, PDO::PARAM_INT);
+			$sql_del_pic-> execute();
+
+			$sql_del_gal = $this->_connexion->prepare("DELETE FROM galleries WHERE folder = :folder");
+			$sql_del_gal-> bindParam('folder', $folder_name, PDO::PARAM_STR);
+			$sql_del_gal-> execute();
 		}
 
 		public function insertPics($id, $pic_title, $pic_subtitle, $link, $thumb){
@@ -199,6 +204,22 @@
 			
 		}
 
+		public function delTree($dir) {
+		   $files = array_diff(scandir($dir), array('.','..'));
+		    foreach ($files as $file) {
+		    	if(is_dir("$dir/$file")){
+		      		$files2 = array_diff(scandir($dir.'/'.$file), array('.','..'));
+		      		foreach ($files2 as $value) {
+		      			unlink($dir.'/'.$file.'/'.$value);
+		      		}
+		      		rmdir($dir.'/'.$file);
+		      	}else{
+		      		unlink($dir.'/'.$file);
+		      	}
+		    }
+		    return rmdir($dir);		
+		} 
+
 
 		/**
 		*	check if pics have been removed or added to a gallery
@@ -216,10 +237,17 @@
 				$picslistRemove[$value['id']] = $value['link'];
 			}
 
+			$folderpics = array();
 			$gallery_content = $this->getAllPics($content);
 			foreach ($gallery_content as $value) {
 				$folderpics[$value] = 'photos/'.$folder.'/'.$value;
 			}
+
+			if(empty($folderpics)){
+				// $this->deleteGallery($folder);
+				$this->delTree("photos/".$folder);
+			}
+
 
 			// check if pics have been added
 			$list = array();

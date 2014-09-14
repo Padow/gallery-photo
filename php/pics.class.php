@@ -26,6 +26,8 @@ Class Pictures extends Connexion{
 			echo '<h3>'.$rows[0]['gallery_name'].'</h3>';
 			echo '<h5>'.$rows[0]['subtitle'].'</h5>';
 			$total = count($rows);
+			if($total == 0)
+				header('location: ./');
 			$cpt = 1;		
 			foreach ($rows as $key => $value) {
 				$comment = ($value['nbcomment']>1)?$value['nbcomment'].' commentaires':$value['nbcomment'].' commentaire';

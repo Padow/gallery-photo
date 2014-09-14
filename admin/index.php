@@ -15,7 +15,7 @@ if ((!isset($_SESSION['log'])) || (empty($_SESSION['log']))){
 <html lang="fr">
   <head>
     <link href="../style/favicon.ico" rel="icon">
-    <meta author="Padow">
+    <meta name="author" lang="fr" content="Padow"> 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
