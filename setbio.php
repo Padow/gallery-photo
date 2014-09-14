@@ -89,20 +89,20 @@ $param = new Param();
         ?>
 
         <form method="post">
-            <textarea name="editor1" id="editor1" rows="500" cols="80">
-                <?php $bio->getBio(); ?>
-            </textarea>
-            <script>
+          <textarea name="editor1" id="editor1" rows="500" cols="80">
+              <?php $bio->getBio(); ?>
+          </textarea>
+          <script>
 
-                // Replace the <textarea id="editor1"> with a CKEditor
-                // instance, using default configuration.
-                CKEDITOR.replace( 'editor1', {
-                    "extraPlugins": "imagebrowser",
-                    "imageBrowser_listUrl": "../../../../images_list.json"
-                });
-            </script>
-
-            <input type="submit" name="ok" value="ok">
+              // Replace the <textarea id="editor1"> with a CKEditor
+              // instance, using default configuration.
+              CKEDITOR.replace( 'editor1', {
+                  "extraPlugins": "imagebrowser",
+                  "imageBrowser_listUrl": "../../../../images_list.json"
+              });
+          </script>
+          <div class="sep"></div>
+          <button class="btn btn-default btn-lg" type="submit" name="ok"><span class="glyphicon glyphicon-save"></span> Enregistrer</button>
         </form>
 
         <?php 
