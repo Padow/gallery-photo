@@ -9,7 +9,8 @@
 	    $ip = $_SERVER['REMOTE_ADDR'];
 	}
 	$spamm = new Antispam();
-	$return_arr["status"] = ($spamm->antispam($ip))?"success":"fail";	
+	$return_arr["status"] = ($spamm->antispam($ip))?"success":"fail";
+	$return_arr["timeleft"]	= $spamm->timeLeft($ip);
     echo json_encode($return_arr);
     exit();
 ?>

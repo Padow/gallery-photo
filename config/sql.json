@@ -1,7 +1,7 @@
 {
 	"sql":
 	{
-		"_comments":"chose `pgsql` or `mysql` as driver",
+		"_comments":"choose `pgsql` or `mysql` as driver",
 		"driver":"mysql",
 		"host":"localhost",
 		"user":"",

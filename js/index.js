@@ -241,13 +241,12 @@ function antiSpam(){
     url: "php/antispam.php",
     dataType: "json",
     success: function(response){
-      console.log(response);
       switch(response.status){
         case 'success':
           $('#commentForm').submit();
           break;
         case 'fail':
-          $('#alert-message').load('php/alert.display.php').fadeIn("slow");
+          $('#alert-message').load('php/alert.display.php', { "timeleft": response.timeleft} ).fadeIn("slow");
           break;
         default:
           alert("unknown response");
