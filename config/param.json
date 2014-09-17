@@ -1,15 +1,11 @@
 {
-	"header":
-	{
+	"header":{
 		"pagename":"Gallery by padow"
 	},
-	"content":
-	{
+	"content":{
 		"title":"Gallery"
 	},
-	"footer":
-	{
+	"footer":{
 		"contact":""
 	}
-
 }

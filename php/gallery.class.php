@@ -9,12 +9,11 @@
 			if (!is_dir($dir))
 				mkdir($dir);
 			$gallery_list = array();
-			$gallery = scandir($dir);
+			$gallery = array_diff(scandir($dir), array('.','..'));
 			foreach ($gallery as $value) {
-				if ($value != '.' && $value !='..') {
-					$gallery_list[$value] = $dir.'/'.$value;				
-				}
+					$gallery_list[$value] = $dir.'/'.$value;			
 			}
+	
 			$this->check_galleries($gallery_list);
 			foreach ($gallery_list as $key => $value) {
 				$gallery_content = scandir($value);
@@ -42,14 +41,9 @@
 		*	
 		*/
 		public function getAllPics($dir){
-			$gallery_content = scandir($dir);
 			$regex = "/\.(bmp|tiff|png|gif|jpe?g)$/";
-			$gallery_pictures = array();
-			foreach ($gallery_content as $value) {
-				if (preg_match($regex, $value)) {
-					$gallery_pictures[] = $value;
-				}
-			}
+			$scanned_dir = scandir($dir);
+			$gallery_pictures = preg_grep($regex, $scanned_dir);
 			return $gallery_pictures;
 		}
 
@@ -100,8 +94,7 @@
 			$sql-> execute();
 			$rows = $sql->fetchAll(PDO::FETCH_ASSOC);
 			foreach ($rows as $key => $value) {
-				$folder = 'photos/'.$value['folder'];
-				if (!in_array($folder, $gallery_list)) {
+				if (!array_key_exists($value['folder'], $gallery_list)) {
 					$this->deleteGallery($value['folder']);
 				}
 			}

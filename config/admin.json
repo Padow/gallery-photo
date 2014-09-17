@@ -1,8 +1,6 @@
 {
-	"admin":
-	{
+	"admin":{
 		"login":"login",
 		"password":"password"
 	}
-
 }
