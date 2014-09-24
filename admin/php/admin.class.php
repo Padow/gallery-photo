@@ -136,26 +136,29 @@ Class Admin extends Connexion{
 		}
 
 		public function getGalleryInfo($name){
-			$sql = $this->_connexion->prepare("SELECT galleries.id AS gallery_id, galleries.name AS gallery_name, galleries.subtitle, pictures.id AS picture_id, pictures.name AS picture_name, pictures.info, pictures.thumb 
+			$sql = $this->_connexion->prepare("SELECT galleries.id AS gallery_id, galleries.thumb AS galthumb, galleries.name AS gallery_name, galleries.subtitle, pictures.id AS picture_id, pictures.name AS picture_name, pictures.info, pictures.thumb 
 												FROM galleries JOIN pictures ON galleries.id = pictures.gallery
 												WHERE galleries.name = :name");
 			$sql-> bindParam('name', $name, PDO::PARAM_STR);
 			$sql-> execute();
 			$rows = $sql->fetchAll(PDO::FETCH_ASSOC);
-
+			
 			echo '<div class="col-md-12">';
+			// var_dump($rows);
 				echo '<div id="'.$rows[0]['gallery_id'].'" titre="'.$rows[0]['gallery_name'].'" subtitle="'.$rows[0]['subtitle'].'" class="col-md-12 gallery-info" onclick="displayGalForm(this.id);">';
 					echo '<p><h1>'.$rows[0]['gallery_name'].'</h1></p>';
 					echo '<p><h3>'.$rows[0]['subtitle'].'</h3></p>';
 				echo '</div>';
 			$cpt = 0;
 			foreach ($rows as $value) {
+				$radio = ($value['thumb'] == $value['galthumb'])?'<div class="mini"><input type="radio" content="'.$value['gallery_id'].'" onchange="getThumb(this.id)" value="'.$value['thumb'].'" name="thumb" id="radio'.$cpt.'" class="mini" checked><label for="radio'.$cpt.'" class="mini"> miniature</label></div>':'<div class="mini"><input id="radio'.$cpt.'" type="radio" content="'.$value['gallery_id'].'" onchange="getThumb(this.id)" value="'.$value['thumb'].'" name="thumb" class="mini"><label for="radio'.$cpt.'" class="mini"> miniature</label></div>';
 				if($cpt%2){
 					echo '<div onclick="displayPicsForm(this.id);" id="'.$value['picture_id'].'" class="col-md-12 padd-admin paire">';
 				}else{
 					echo '<div onclick="displayPicsForm(this.id);" id="'.$value['picture_id'].'" class="col-md-12 padd-admin impaire">';
 				}	
 					echo '<img id="'.$value['picture_name'].'" alt="'.$value['info'].'" class="thumbnails" src="../'.$value['thumb'].'">';
+					echo $radio;
 					echo '<p><h4>'.$value['picture_name'].'</h4></p>';
 					echo '<p><h5>'.$value['info'].'</h5></p>';
 					
@@ -200,6 +203,13 @@ Class Admin extends Connexion{
 			$sql2-> bindParam('newnbcomment', $newnbcomment, PDO::PARAM_INT);
 			$sql2-> execute();
 
+		}
+
+		public function changeGalleryThumb($thumb, $id){
+			$sql = $this->_connexion->prepare("UPDATE galleries SET thumb = :thumb WHERE id = :id");
+			$sql-> bindParam('thumb', $thumb, PDO::PARAM_STR);
+			$sql-> bindParam('id', $id, PDO::PARAM_INT);
+			$sql-> execute();
 		}
 
 }

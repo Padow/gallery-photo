@@ -11,9 +11,9 @@
 			$gallery_list = array();
 			$gallery = array_diff(scandir($dir), array('.','..'));
 			foreach ($gallery as $value) {
-					$gallery_list[$value] = $dir.'/'.$value;			
+				$gallery_list[$value] = $dir.'/'.$value;			
 			}
-	
+
 			$this->check_galleries($gallery_list);
 			foreach ($gallery_list as $key => $value) {
 				$gallery_content = scandir($value);
@@ -148,12 +148,13 @@
 		}	
 
 		public function displayGalleries(){
-			$sql = $this->_connexion->prepare("SELECT galleries.id, galleries.name,  MIN(pictures.thumb) AS thumb FROM galleries JOIN pictures ON galleries.id = pictures.gallery group by galleries.id ORDER BY galleries.name");
+			$sql = $this->_connexion->prepare("SELECT galleries.id, galleries.thumb, galleries.name,  MIN(pictures.thumb) AS thumbdef FROM galleries JOIN pictures ON galleries.id = pictures.gallery group by galleries.id ORDER BY galleries.name");
 			$sql-> execute();
 			$rows = $sql->fetchAll(PDO::FETCH_ASSOC);
 			$cpt = 1;
 			foreach ($rows as $value) {
-				echo '<a href="gallery.php?gal='.$value['id'].'"><div id="grid'.$cpt.'" class="grid" onMouseover="bounce(this.id)"><img id="'.$cpt.'"  src="'.$value['thumb'].'" class="img" alt="Responsive image"><div id="gallery_grid_title'.$cpt.'" class="gallery_grid_title"><p class="galtitle">'.$value['name'].'<p></div></div></a>';
+				$thumb = empty($value['thumb'])?$value['thumbdef']:$value['thumb'];
+				echo '<a href="gallery.php?gal='.$value['id'].'"><div id="grid'.$cpt.'" class="grid" onMouseover="bounce(this.id)"><img id="'.$cpt.'"  src="'.$thumb.'" class="img" alt="Responsive image"><div id="gallery_grid_title'.$cpt.'" class="gallery_grid_title"><p class="galtitle">'.$value['name'].'<p></div></div></a>';
 				$cpt++;
 			}
 			

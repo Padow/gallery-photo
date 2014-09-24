@@ -7,6 +7,7 @@ CREATE TABLE "galleries" (  "id" SERIAL NOT NULL ,
   "folder" VARCHAR(255) NULL ,
   "name" VARCHAR(255) NOT NULL ,
   "subtitle" VARCHAR(255) NULL ,
+  "thumb" VARCHAR(255) NULL ,
   PRIMARY KEY ("id"),
   UNIQUE ("folder")
 ); 

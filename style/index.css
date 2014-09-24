@@ -384,3 +384,7 @@ img{
 .delete-com{
   cursor: pointer;
 }
+
+div.mini{
+  width: 100px;
+}

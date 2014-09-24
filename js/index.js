@@ -172,11 +172,42 @@ $(document).bind('keydown', function (event){
   $('.del').nextAll().remove(); 
  });
 
+$( document ).click(function(event) {
+  event = event || window.event;
+  var divClass = event.target.getAttribute("class");
+  var picsBack = $('.form-back').attr("style");
+  var galBack = $('.gal-form-back').attr("style");
+  
+
+  if((divClass == "form-back" ) && (picsBack == "display: block;"))
+    hidePicsForm();
+
+  if((divClass == "gal-form-back" ) && (galBack == "display: block;"))
+    hideGalForm();
+});
+
+function getThumb(id){
+  var path = $('#'+id).val();
+  var gallery = $('#'+id).attr("content");
+
+  $.ajax({
+          url: "php/thumbnail.php",
+          type: "GET",
+          data: {key: gallery, path: path}    
+     });
+}
+
 function displayPicsForm(id){
-  $('.form-back').css({"display": "block"});
-  $('#inputtitre').val($('#'+id+'.padd-admin').children('.thumbnails').attr("id"));
-  $('#inputsoustitre').val($('#'+id+'.padd-admin').children('.thumbnails').attr("alt"));
-  $('#inputid').val(id);
+  $( ".padd-admin" ).click(function(event) {
+  event = event || window.event;
+  var div = event.target.getAttribute("class");
+    if (div != "mini") {
+      $('.form-back').css({"display": "block"});
+      $('#inputtitre').val($('#'+id+'.padd-admin').children('.thumbnails').attr("id"));
+      $('#inputsoustitre').val($('#'+id+'.padd-admin').children('.thumbnails').attr("alt"));
+      $('#inputid').val(id);
+    };
+  }); 
 }
 
 function hidePicsForm(){
@@ -257,15 +288,4 @@ function antiSpam(){
   
 }
 
-$( document ).click(function(event) {
-  event = event || window.event;
-  var divClass = event.target.getAttribute("class");
-  var picsBack = $('.form-back').attr("style");
-  var galBack = $('.gal-form-back').attr("style");
 
-  if((divClass == "form-back" ) && (picsBack == "display: block;"))
-    hidePicsForm();
-
-  if((divClass == "gal-form-back" ) && (galBack == "display: block;"))
-    hideGalForm();
-});

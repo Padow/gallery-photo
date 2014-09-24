@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS `galleries` (
   `folder` varchar(255) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
   `subtitle` varchar(255) DEFAULT NULL,
+  `thumb` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `folder` (`folder`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

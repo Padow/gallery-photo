@@ -9,7 +9,7 @@ Site admin can remove some comments, if they are inappropriate
 [http://padow.livehost.fr](http://padow.livehost.fr)
 
 ## Version
-1.1.0
+1.2.0
 
 ## Tech
 
