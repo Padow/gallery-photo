@@ -108,7 +108,7 @@ Class Admin extends Connexion{
 					echo '</div>';
 					echo '<div class="col-md-12 comment-content">';
 					echo $value['comment'];
-					echo '<div class="pull-right"><span onclick="deleteComment(this.id);" id="'.$value['id'].'" pic="'.$value['pics'].'" nbcom="'.$value['nbcomment'].'"  class="glyphicon glyphicon-trash delete-com"></span></div>';
+					echo '<div class="pull-right"><span onclick="askBeforeDelete(this.id);" id="'.$value['id'].'" pic="'.$value['pics'].'" nbcom="'.$value['nbcomment'].'"  class="glyphicon glyphicon-trash delete-com"></span></div>';
 					echo '</div>';
 				}
 			}else{

@@ -388,3 +388,23 @@ img{
 div.mini{
   width: 100px;
 }
+
+.form-backa{
+  display: none;
+  position: fixed;
+  top: 0%;
+  bottom: 0%;
+  left: 0%;
+  right: 0%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 999;
+}
+
+.del-conf{
+  position: relative;
+  max-width: 200px;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%); 
+  -webkit-transform: translate(-50%); 
+}

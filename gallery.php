@@ -33,7 +33,6 @@ $param = new Param();
   		require_once('php/pics.class.php');
   		
   	?>
-  
  <div class="wrap">
   <div class="content">
 	  <nav class="navbar navbar-inverse" role="navigation">

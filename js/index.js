@@ -232,22 +232,34 @@ function hideGalForm(){
   $('#galinputsoustitre').val();  
 }
 
-function deleteComment(id){
+function hideconfirmMess(){
+  $('.form-backa').css({"display": "none"});
+  $('#delButton').val("");
+  $('#delButton').attr("pic", "");
+  $('#delButton').attr("nbcom", "");
+}
+
+function askBeforeDelete(id){
+  $('.form-backa').css({"display": "block"});
   var pic = $('#'+id).attr("pic");
   var nbcom = $('#'+id).attr("nbcom");
-  
-  var isGood = confirm("Supprimer le commentaire");
-  if(isGood){
-    
-    $.ajax({
-          url: "php/delete_comment.php",
-          type: "GET",
-          data: {key: id, pic: pic, nbcom: nbcom},
-          success: function(){
-                    window.location.reload();
-                   }
-     });
-  }
+  $('#delButton').val(id);
+  $('#delButton').attr("pic", pic);
+  $('#delButton').attr("nbcom", nbcom);
+}
+
+function deleteComment(){
+  var pic = $('#delButton').attr("pic");
+  var nbcom = $('#delButton').attr("nbcom");
+  var id = $('#delButton').val();    
+  $.ajax({
+        url: "php/delete_comment.php",
+        type: "GET",
+        data: {key: id, pic: pic, nbcom: nbcom},
+        success: function(){
+                  window.location.reload();
+                 }
+   });
 }
 
 function antiSpam(){
