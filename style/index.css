@@ -408,3 +408,16 @@ div.mini{
   transform: translate(-50%); 
   -webkit-transform: translate(-50%); 
 }
+
+.contactarea {
+    height: 10em;
+    resize: none;
+    margin-bottom: 1em;
+    color: black;
+    display: block;
+    width: 100%;
+}
+
+.error{
+  color: red;
+}

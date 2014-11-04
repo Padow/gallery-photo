@@ -3,8 +3,8 @@
 		"_comments":"choose `pgsql` or `mysql` as driver",
 		"driver":"mysql",
 		"host":"localhost",
-		"user":"",
-		"password":"",
+		"user":"root",
+		"password":"toor",
 		"database":"gallery"
 	}
 }

@@ -14,9 +14,9 @@
  			$title = $this->getJson()->{'header'}->{'pagename'};
  		}
  		if ((isset($title)) && ($title !=""))
- 			echo '<title>'.$title.'</title>';
+ 			echo $title;
  		else
- 			echo '<title>Galerie photo</title>';
+ 			echo 'Galerie photo';
  	}
 
  	public function setContentTitle(){
@@ -33,8 +33,13 @@
  		if ($this->getJson()){
  			$contact = $this->getJson()->{'footer'}->{'contact'};
  		}
- 		if ((isset($contact)) && ($contact !=""))
- 			echo '<a href="mailto:'.$contact.'" >Contact</a>';
+ 		if (preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $contact))
+ 			echo '<a href="contact.php" >Contact</a>';
+ 	}
+
+ 	public function getEmail(){
+ 		$contact = $this->getJson()->{'footer'}->{'contact'};
+ 		return $contact;
  	}
 
 

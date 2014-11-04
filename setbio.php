@@ -16,7 +16,7 @@ $param = new Param();
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php $param->setPageTitle(); ?>
+    <title><?php $param->setPageTitle(); ?></title>
 
     <!-- Bootstrap -->
     <link href="style/bootstrap/css/bootstrap.min.css" rel="stylesheet">
