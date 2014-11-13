@@ -84,9 +84,9 @@ $param = new Param();
           }
          
           if ($valide) {
-            $headers = 'FROM: "'.$name.'" <'.$mailfrom.'>';
+            $headers = "From: $name\r\nReply-to: $mailfrom";
             $sujet = $subject." - via site photo : ".$mailfrom;
-            if(@mail($to, $sujet, $message, $headers)){
+            if(@mail($to, $sujet, $message, $headers, '-f'.$mailfrom)){
               $info = true;
               $confirm = "Votre message à bien été envoyé.";
               unset($_POST);
@@ -97,7 +97,7 @@ $param = new Param();
           }         
       }
         require_once('php/contact.class.php');
-        $contact = new Contact(isset($_POST)?$_POST:[]);
+        $contact = new Contact(isset($_POST)?$_POST:"");
     ?>
     <div class="col-md-12">
       <?php if (isset($Warning) && $Warning) { ?>

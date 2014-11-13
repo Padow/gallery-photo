@@ -2,9 +2,9 @@
 
 	class Contact{
 
-		private $_datas = [];
+		private $_datas;
 
-		public function __construct($datas = []){
+		public function __construct($datas){
 			$this->_datas = $datas;
 		}
 

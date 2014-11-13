@@ -1,9 +1,9 @@
 <?php  
 
 Class Comment extends Connexion{
-	    private $_datas = [];
+	    private $_datas;
 
-		public function __construct($datas = []){
+		public function __construct($datas){
 			$this->_connexion = parent::__construct();
 			$this->_datas = $datas;
 		}

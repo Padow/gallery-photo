@@ -64,7 +64,7 @@ $param = new Param();
 	  				$pics = $_GET['pics'];
 	  			}
 	  			if (isset($gallery) && isset($pics)) {
-	  				$comment = new Comment(isset($_POST)?$_POST:[]);
+	  				$comment = new Comment(isset($_POST)?$_POST:"");
 	  				$comment->getPicture($gallery, $pics);
 	  			}else{
 	  				header("location: ./");
