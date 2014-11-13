@@ -241,7 +241,7 @@ img{
   height: 200px !important; 
   border: double 2px grey !important;
   border-radius: 0px !important; 
-  color: #FFF
+  color: #FFF !important;
 }
 
 .sep{

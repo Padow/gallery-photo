@@ -84,6 +84,7 @@ $param = new Param();
           }
          
           if ($valide) {
+            $to = $param->getEmail();
             $headers = "From: $name\r\nReply-to: $mailfrom";
             $sujet = $subject." - via site photo : ".$mailfrom;
             if(@mail($to, $sujet, $message, $headers, '-f'.$mailfrom)){
@@ -115,7 +116,6 @@ $param = new Param();
           <?php if (isset($confirm)) { echo $contact->confirmation($info, $confirm);} ?>
       </div>
           <form role="form" method="post">
-          <input type="text" id="to" name="to" value="<?php echo $param->getEmail(); ?>" class="form-control hidden">
           <?php
             echo $contact->text('name', 'Nom');
             echo $contact->email('mailfrom', 'Email');
