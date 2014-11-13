@@ -13,4 +13,3 @@
 	$return_arr["timeleft"]	= $spamm->timeLeft($ip);
     echo json_encode($return_arr);
     exit();
-?>

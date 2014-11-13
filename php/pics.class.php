@@ -38,6 +38,3 @@ Class Pictures extends Connexion{
 
 
 }
-
-
-?>

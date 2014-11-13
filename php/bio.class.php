@@ -19,7 +19,7 @@ Class Bio extends Connexion{
 		public function setBio($content){
 			if ($this->isBioexist()) {
 				$this->updateBio($content);
-			}else{
+			} else {
 				$this->insertBio($content);
 			}
 			header('location: bio.php');
@@ -53,5 +53,3 @@ Class Bio extends Connexion{
 
 
 }
-
-?>

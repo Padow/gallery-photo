@@ -2,8 +2,7 @@
 ob_start();
 require_once('php/param.class.php');
 $param = new Param();
-?>
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="fr">
   <head>
   	<link href="style/favicon.ico" rel="icon">
@@ -65,30 +64,35 @@ $param = new Param();
 	  				$pics = $_GET['pics'];
 	  			}
 	  			if (isset($gallery) && isset($pics)) {
-	  				$comment = new Comment();
+	  				$comment = new Comment(isset($_POST)?$_POST:[]);
 	  				$comment->getPicture($gallery, $pics);
 	  			}else{
 	  				header("location: ./");
+	  			}
+
+	  			if (isset($_POST['hiddensub'])) {
+	  				echo $comment->formCheck($_POST['gallery'], $_POST['pics'], $_POST['author'], $_POST['comment']);
 	  			}
 	  			
 	  		?>
 
 	  		<div class="col-md-12 sep"></div>
-		  	<form method="post" id="commentForm" name="commentForm" action="php/submitform.php">
+		  	<form method="post" id="commentForm" name="commentForm">
 	          <div class="col-md-12 no-pad">
 		        <div class="col-md-12 border no-pad">
 		          	<div class="col-md-12 comment-input-name">
 			          	<div class="input-group ">
 					      <div class="input-group-addon no-radius">Nom</div>
-					     	 <input class="form-control no-radius" id="author-input" name="author" type="text" placeholder="Entrez votre nom" required>
+					      	<?php echo $comment->text('author'); ?>
 					    </div>
 			        </div>
 		        </div>
-	            <textarea id="form_Commentaire" class="textarea" wrap="soft" name="comment" required></textarea>
+	            <?php echo $comment->textarea('comment'); ?>
 	          </div>
 				<div id="alert-message" class="col-md-12 no-pad"></div>
 	          <div class="col-md-3 no-padd">
 	            <button onclick="antiSpam();" type="button" name="send" class="btn btn-sm btn-primary btn-block" style="margin-top: 10px;"><span class="glyphicon glyphicon-send"></span> Envoyer</button>
+	            <button id="submitcomment" name="hiddensub" type="submit" class="hide">hidden submit</button>
 	          </div>
 	          <input type="text" name="gallery" value="<?php echo $gallery; ?>" hidden >
 	          <input type="text" name="pics" value="<?php echo $pics; ?>" hidden >

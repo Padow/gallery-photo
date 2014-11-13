@@ -31,5 +31,3 @@
 			return $this->_connexion;
 		}
 	}	
-
-?>

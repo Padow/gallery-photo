@@ -1,9 +1,11 @@
 <?php  
 
 Class Comment extends Connexion{
+	    private $_datas = [];
 
-		public function __construct(){
+		public function __construct($datas = []){
 			$this->_connexion = parent::__construct();
+			$this->_datas = $datas;
 		}
 
 
@@ -22,6 +24,33 @@ Class Comment extends Connexion{
 				echo '<h5>'.$value['info'].'</h5></div>';
 				echo '<span class="commentaire">Commentaire(s) : '.$value['nbcomment'].'</span><div class="col-md-12 sep"></div>';
 			}
+		}
+
+		public function input($type, $name){
+			$value = $this->getValue($name);
+			if ($type == "textarea") {
+				$input = " <textarea id=\"form_Commentaire\" class=\"textarea form-control\" wrap=\"soft\" name=\"$name\" required>$value</textarea>";
+			}else{
+				$input = "<input class=\"form-control no-radius\" id=\"author-input\" name=\"$name\" type=\"text\" placeholder=\"Entrez votre nom\" value=\"$value\" required>";
+			}
+			
+			return $input;
+		}
+
+		public function text($name){
+			return $this->input('text', $name);
+		}
+
+        public function textarea($name){
+			return $this->input('textarea', $name);
+		}
+
+		public function getValue($name){
+			$value = "";
+			if (isset($this->_datas[$name])) {
+				$value = $this->_datas[$name];
+			}
+			return $value;
 		}
 
 		public function setComment($gallery, $pics, $author, $comment){
@@ -44,7 +73,37 @@ Class Comment extends Connexion{
 			$sql-> execute();
 			$this->updateNbcomment($gallery, $pics);
 
-			echo '<script type="text/javascript">window.location.href="../comment.php?gallery='.$gallery.'&pics='.$pics.'";</script>';
+			echo '<script type="text/javascript">window.location.href="comment.php?gallery='.$gallery.'&pics='.$pics.'";</script>';
+		}
+
+		public function formCheck($gallery, $pics, $author, $comment){
+			$error = "";
+			$error .= '<div class="alert alert-warning alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span><span class="sr-only">Close</span></button>
+                      <p><strong>Attention !</strong><p>';
+			$valide = true;
+			if (!preg_match("/\S/", $author)) {
+            $valide = false;
+            $Warning = true;
+            $error .= '<ul>Veuillez entrer votre nom..</ul>';   
+          }
+
+          if (!preg_match("/\S/", $comment)) {
+            $valide = false;
+            $Warning = true;
+            $error .= '<ul>Le message ne peut être vide.</ul>';   
+          }
+
+          $error .= '</div>';
+
+          if ($valide) {
+          	$this->setComment($gallery, $pics, $author, $comment);
+          } else {
+          	return $error;
+          }
+
+          
+
 		}
 
 		public function getComments($gallery, $pics){
@@ -90,7 +149,3 @@ Class Comment extends Connexion{
 			echo ", le ".$date." à ".$time;
 		}
 }
-
-
-?>
-

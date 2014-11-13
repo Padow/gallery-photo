@@ -74,8 +74,8 @@
 
 			imagecopyresized($nm, $im, 0,0,0,0,$nx,$ny,$ox,$oy);
 
-			if(!file_exists($path_to_thumbs_directory)) {
-				if(!mkdir($path_to_thumbs_directory)) {
+			if (!file_exists($path_to_thumbs_directory)) {
+				if (!mkdir($path_to_thumbs_directory)) {
 					die("There was a problem. Please try again!");
 				}
 			}
@@ -237,7 +237,7 @@
 				$folderpics[$value] = 'photos/'.$folder.'/'.$value;
 			}
 
-			if(empty($folderpics)){
+			if (empty($folderpics)) {
 				$this->deleteGallery($folder);
 				$this->delTree("photos/".$folder);
 			}
@@ -256,7 +256,7 @@
 					$cpt++;
 				}
 			}
-			if($list)
+			if ($list)
 				$this->addPicture($list);
 
 			//check if pics have been removed
@@ -266,7 +266,7 @@
 					$list2[$value] = $key;
 				}
 			}
-			if($list2){
+			if ($list2) {
 				foreach ($list2 as $key => $value) {
 					$this->removePic($value, $key);
 				}
@@ -333,7 +333,7 @@
 				$folder_name = $folder_name[1];	
 				$gallery_title = (isset($title_line[0]))?(htmlspecialchars($title_line[0], ENT_QUOTES)):(htmlspecialchars($folder_name, ENT_QUOTES));
 				$gallery_subtitle = (isset($title_line[1]))?(htmlspecialchars($title_line[1], ENT_QUOTES)):"";
-			}else{
+			} else {
 				$gallery_title = preg_split("/\//", $file);
 				$gallery_title = htmlspecialchars($gallery_title[1], ENT_QUOTES);
 				$gallery_subtitle = "";
@@ -402,7 +402,7 @@
 			$subtitle = htmlspecialchars($info->{'description'}, ENT_QUOTES);
 			$folder_name = preg_split("/\//", $file);
 			$folder_name = $folder_name[1];
-			if($title == ""){
+			if ($title == "") {
 				$title = $folder_name;
 			}
 
@@ -427,7 +427,7 @@
 					if ($pics_to_add[$value]['title'] == "") {
 						$pics_to_add[$value]['title'] = htmlspecialchars($value, ENT_QUOTES);
 					}
-				}else{
+				} else {
 					$pics_to_add[$value]['title'] = htmlspecialchars($value, ENT_QUOTES);
 					$pics_to_add[$value]['subtitle'] = "";
 				}
@@ -446,7 +446,3 @@
 		}
 
 	}
-
-
-
-?>

@@ -31,4 +31,3 @@ Class Antispam extends Connexion{
 
 
 }
-?>

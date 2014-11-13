@@ -2,8 +2,7 @@
 ob_start(); 
 require_once('php/param.class.php');
 $param = new Param();
-?>
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="fr">
   <head>
     <link href="style/favicon.ico" rel="icon">
@@ -27,9 +26,7 @@ $param = new Param();
   <body ondragstart="return false;" ondrop="return false;">
     <div class="body">
     <?php 
-      require_once('php/connexion.class.php');
-      require_once('php/gallery.class.php');
-      
+
     ?>
  <div class="wrap">
   <div class="content">
@@ -55,54 +52,76 @@ $param = new Param();
       </div><!-- /.container-fluid -->
     </nav>
       <div class="container">
-         <?php 
+      <?php         
         if (isset($_POST['envoyer'])) {
           extract($_POST);
-
-          if(preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $mailfrom)){
-            $valide = true;
+          $Warning = false;
+          $error = "";
+          if (filter_var($mailfrom, FILTER_VALIDATE_EMAIL)) {
+              $valide = true;
           }else{
             $valide = false;
-            $errormail = 'adresse mail non valide';
+            $Warning = true;
+            $error .= '<ul>Adresse mail non valide.</ul>';          
           }
 
-          if($valide){
-            $headers = "From: $name <$mailfrom>";
+          if (!preg_match("/\S/", $name)) {
+            $valide = false;
+            $Warning = true;
+            $error .= '<ul>Veuillez entrer votre nom.</ul>';   
+          }
+
+          if (!preg_match("/\S/", $subject)) {
+            $valide = false;
+            $Warning = true;
+            $error .= '<ul>Le sujet ne peut être vide.</ul>';   
+          }
+
+          if (!preg_match("/\S/", $message)) {
+            $valide = false;
+            $Warning = true;
+            $error .= '<ul>Le message ne peut être vide.</ul>';   
+          }
+         
+          if ($valide) {
+            $headers = 'FROM: "'.$name.'" <'.$mailfrom.'>';
             $sujet = $subject." - via site photo : ".$mailfrom;
-            if(mail($to, $sujet, $message, $headers)){
+            if(@mail($to, $sujet, $message, $headers)){
+              $info = true;
               $confirm = "Votre message à bien été envoyé.";
-              unset($name);
-              unset($subject);
-              unset($sujet);
-              unset($mailfrom);
-              unset($message);
+              unset($_POST);
             }else{
+              $info = false;
               $confirm = "Une erreur est survenu, votre mail n'a pu être envoyé.";
             }
-          }
-
-         
-           
-        }
-      ?>
-        <div class="col-md-6">
+          }         
+      }
+        require_once('php/contact.class.php');
+        $contact = new Contact(isset($_POST)?$_POST:[]);
+    ?>
     <div class="col-md-12">
-          <?php if(isset($confirm)){echo "<p><strong>".$confirm."</strong></p>";} ?>
-        </div>
+      <?php if (isset($Warning) && $Warning) { ?>
+      <div class="alert alert-warning alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span><span class="sr-only">Close</span></button>
+        <p><strong>Attention !</strong><p>
+        <p><?php echo $error; ?></p>
+      </div>
+      <?php } ?>
+
+     
+    </div>
+    <div class="col-md-6">
+      <div class="col-md-12">
+          <?php if (isset($confirm)) { echo $contact->confirmation($info, $confirm);} ?>
+      </div>
           <form role="form" method="post">
           <input type="text" id="to" name="to" value="<?php echo $param->getEmail(); ?>" class="form-control hidden">
-          <label for="name">Nom</label>
-          <input type="text" id="name" name="name" value="<?php if(isset($name)){echo $name;} ?>" class="form-control" required>
-          <label for="mail">e-mail</label>
-          <input type="email" id="mail" name="mailfrom" value="<?php if(isset($mailfrom)){echo $mailfrom;} ?>" class="form-control" required>
-          <div class="col-md-12">
-            <span class="error"><?php if(isset($errormail)){echo $errormail;} ?></span>
-          </div>
-          
-          <label for="subject">Sujet</label>
-          <input type="text" id="subject" name="subject" value="<?php if(isset($subject)){echo $subject;} ?>" class="form-control" required>
-          <label form="message">Message</label>
-          <textarea id="message" name="message" class="contactarea" required ><?php if(isset($message)){echo $message;} ?></textarea>
+          <?php
+            echo $contact->text('name', 'Nom');
+            echo $contact->email('mailfrom', 'Email');
+            echo $contact->text('subject', 'Sujet');
+            echo $contact->textarea('message', 'Message');
+          ?>
           <button type="submit" name="envoyer" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Envoyer</button>
         </form>
         </div>  
