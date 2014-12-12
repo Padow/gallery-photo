@@ -981,7 +981,7 @@
                 }
             }
         },
-
+        // ici pour ajouter icon commntaire
         setTarget: function (index) {
             var id = this.slides[index].firstChild.rev;
             var text = this.slides[index].firstChild.target,

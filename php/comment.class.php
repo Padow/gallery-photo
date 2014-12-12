@@ -85,7 +85,7 @@ Class Comment extends Connexion{
 			if (!preg_match("/\S/", $author)) {
             $valide = false;
             $Warning = true;
-            $error .= '<ul>Veuillez entrer votre nom..</ul>';   
+            $error .= '<ul>Veuillez entrer votre nom.</ul>';   
           }
 
           if (!preg_match("/\S/", $comment)) {

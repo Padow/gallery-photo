@@ -67,20 +67,6 @@ $param = new Param();
 	    <script src="js/jquery.min.js"></script>
 	    <!-- Include all compiled plugins (below), or include individual files as needed -->
 	    <script src="style/bootstrap/js/bootstrap.min.js"></script>
-      <script type="text/javascript" src="js/jquery-ui/jquery-ui.js"></script>
-      <script type="text/javascript">
-
-       function bounce(id){
-          var split = id.split("grid");
-          var bounceid = "gallery_grid_title"+split[1];
-          $("#"+id).children("#"+bounceid).effect("bounce", { times: 3 }, 700);
-          $("#"+bounceid).children(".galtitle").css({"color":"yellow"});
-          setTimeout(function() {
-                $("#"+bounceid).children(".galtitle").css({"color":"white"});
-          }, 700);
-       }
-
-      </script>
       <script src="js/index.js"></script>
   </div>
   <div class="footer">

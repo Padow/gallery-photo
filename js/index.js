@@ -146,7 +146,7 @@ $(window).ready(function(){
 		$("#blueimp-gallery").removeClass( "blueimp-gallery-controls" );
 	}
 $( document ).bind('contextmenu', function(e) {
-  return false;
+  return true;
 });
 
 

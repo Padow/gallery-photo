@@ -69,6 +69,7 @@ html,body{
 	left: 0px;
 	right: 0px;
 	bottom: 20px;
+  transition: bottom 0.5s;
 	font-weight: bolder;
 	font-size: large;
 	background: rgba(0, 0, 0, 0.75);
@@ -81,7 +82,7 @@ html,body{
 	padding-right: 10px;
 	overflow: hidden;
 	text-overflow: ellipsis;
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 .grid{
@@ -98,6 +99,12 @@ html,body{
 
 .grid:hover .img{
   opacity: 0.50;
+}
+
+.grid:hover > .gallery_grid_title{
+  color: yellow;
+  bottom: 40px;
+  transition: bottom 0.5s;
 }
 
 .img{
