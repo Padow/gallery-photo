@@ -10,6 +10,9 @@
 
 	$gallery = new Admin();
 	$gallery->getGalleryInfo($_SESSION['gallery']);
+  $gallery->getMetadata($_SESSION['gallery']);
+  
+
 ?>
 	<div class="form-back">
       <div class="form-fix">

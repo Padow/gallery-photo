@@ -117,11 +117,11 @@ Class Admin extends Connexion{
 		}
 
 		public function getGalleryList(){
-			$sql = $this->_connexion->prepare("SELECT name FROM galleries ORDER BY name");
+			$sql = $this->_connexion->prepare("SELECT id, name FROM galleries ORDER BY name");
 			$sql-> execute();
 			$rows = $sql->fetchAll(PDO::FETCH_ASSOC);
 			foreach ($rows as $value) {
-				echo '<li><span class="gallery_list" id="'.$value['name'].'" onclick="displayGals(this.id);">'.$value['name'].'</span></li>';
+				echo '<li><span class="gallery_list" id="'.$value['id'].'" onclick="displayGals(this.id);">'.$value['name'].'</span></li>';
 			}
 		}
 
@@ -135,16 +135,18 @@ Class Admin extends Connexion{
 			echo ", le ".$date." à ".$time.",";
 		}
 
-		public function getGalleryInfo($name){
+		public function getGalleryInfo($id){
 			$sql = $this->_connexion->prepare("SELECT galleries.id AS gallery_id, galleries.thumb AS galthumb, galleries.name AS gallery_name, galleries.subtitle, pictures.id AS picture_id, pictures.name AS picture_name, pictures.info, pictures.thumb 
 												FROM galleries JOIN pictures ON galleries.id = pictures.gallery
-												WHERE galleries.name = :name");
-			$sql-> bindParam('name', $name, PDO::PARAM_STR);
+												WHERE galleries.id = :id");
+			$sql-> bindParam('id', $id, PDO::PARAM_STR);
 			$sql-> execute();
 			$rows = $sql->fetchAll(PDO::FETCH_ASSOC);
-			
+
+			echo '<div class="col-md-12"><div class="sep"></div>';
+			echo '<a href="php/metadata.json" target="_blank" download name="dlmeta" id="'.$rows[0]['gallery_id'].'" class="btn btn-default" onclick="displayMeta(this.id)"><span class="glyphicon glyphicon-download-alt"></span> Metadata</a>';
+			echo '</div>';
 			echo '<div class="col-md-12">';
-			// var_dump($rows);
 				echo '<div id="'.$rows[0]['gallery_id'].'" titre="'.$rows[0]['gallery_name'].'" subtitle="'.$rows[0]['subtitle'].'" class="col-md-12 gallery-info" onclick="displayGalForm(this.id);">';
 					echo '<p><h1>'.$rows[0]['gallery_name'].'</h1></p>';
 					echo '<p><h3>'.$rows[0]['subtitle'].'</h3></p>';
@@ -210,6 +212,36 @@ Class Admin extends Connexion{
 			$sql-> bindParam('thumb', $thumb, PDO::PARAM_STR);
 			$sql-> bindParam('id', $id, PDO::PARAM_INT);
 			$sql-> execute();
+		}
+
+		public function getMetadata($id){
+			$sql = $this->_connexion->prepare("SELECT galleries.name AS gallery_name, galleries.subtitle, pictures.name AS picture_name, pictures.info, pictures.link
+												FROM galleries JOIN pictures ON galleries.id = pictures.gallery
+												WHERE galleries.id = :id");
+			$sql-> bindParam('id', $id, PDO::PARAM_STR);
+			$sql-> execute();
+			$rows = $sql->fetchAll(PDO::FETCH_ASSOC);
+			if (file_exists("metadata.json")) {
+				unlink("metadata.json");
+			}
+			$handle = fopen("metadata.json", "w+");
+			fwrite($handle, '{ "images": [ ');
+			foreach ($rows as $key => $value) {
+				$img = explode("/", $value['link']);
+				$filename = '{ "filename" : "'.end($img).'",';
+				$title = '"title": "' . $value['picture_name'] .'",';
+				if ($value === end($rows)){
+					$description = '"description" : "'.$value['info'].'"}';
+				}else{
+					$description = '"description" : "'.$value['info'].'"},';
+				}
+				
+				fwrite($handle, $filename.$title.$description);
+			}
+			fwrite($handle, '],');
+			fwrite($handle, '"title": "'.$rows[0]['gallery_name'].'",');
+			fwrite($handle, '"description": "'.$rows[0]['subtitle'].'"}');
+			fclose($handle);
 		}
 
 }

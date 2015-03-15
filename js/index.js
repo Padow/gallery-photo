@@ -12,7 +12,6 @@ function displayGals(id){
 
 }
 
-
 function scrollingTop(){
     $('.body').animate({scrollTop : 0},800);
 }
@@ -280,5 +279,7 @@ function antiSpam(){
     }
   });  
 }
+
+
 
 

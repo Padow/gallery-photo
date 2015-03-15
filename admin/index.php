@@ -82,14 +82,10 @@ if ((!isset($_SESSION['log'])) || (empty($_SESSION['log']))){
             $_SESSION['gallery'] = htmlspecialchars($_POST['galtitre'], ENT_QUOTES);
             $admin->updateGals($_POST['galtitre'], $_POST['galsoustitre'], $_POST['galid']);
           }
+                  
         ?>
   	  	</div>
 
-
-
-     
-      
-      
 
 	    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	    <script src="../js/jquery.min.js"></script>
