@@ -35,6 +35,7 @@
  		}
  		if (preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $contact))
  			echo '<a href="contact.php" >Contact</a>';
+ 		echo '<script type="text/javascript" src="js/analytics.js"></script>';
  	}
 
  	public function getEmail(){

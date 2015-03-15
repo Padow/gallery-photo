@@ -57,7 +57,7 @@
 
 			$final_width_of_image = 300;
 
-			if(preg_match('/[.](jpg)$/', $filename)) {
+			if(preg_match('/[.](jpe?g)$/', $filename)) {
 				$im = imagecreatefromjpeg($path_to_image_directory . $filename);
 			} else if (preg_match('/[.](gif)$/', $filename)) {
 				$im = imagecreatefromgif($path_to_image_directory . $filename);
