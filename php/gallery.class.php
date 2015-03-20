@@ -154,7 +154,7 @@
 			$cpt = 1;
 			foreach ($rows as $value) {
 				$thumb = empty($value['thumb'])?$value['thumbdef']:$value['thumb'];
-				echo '<a href="gallery.php?gal='.$value['id'].'"><div id="grid'.$cpt.'" class="grid" onMouseover="bounce(this.id)"><img id="'.$cpt.'"  src="'.$thumb.'" class="img" alt="Responsive image"><div id="gallery_grid_title'.$cpt.'" class="gallery_grid_title"><p class="galtitle">'.$value['name'].'<p></div></div></a>';
+				echo '<a href="gallery.php?gal='.$value['id'].'"><div id="grid'.$cpt.'" class="grid"><img id="'.$cpt.'"  src="'.$thumb.'" class="img" alt="Responsive image"><div id="gallery_grid_title'.$cpt.'" class="gallery_grid_title"><p class="galtitle">'.$value['name'].'<p></div></div></a>';
 				$cpt++;
 			}
 			
