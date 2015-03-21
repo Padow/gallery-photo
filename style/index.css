@@ -426,3 +426,8 @@ div.mini{
     display: block;
     width: 100%;
 }
+
+.share-content{
+  width: 60%;
+  margin: 0 auto;
+}
