@@ -983,6 +983,8 @@
         },
         // ici pour ajouter icon commntaire
         setTarget: function (index) {
+            var img = document.createElement("img");
+            img.src = "style/comment.png";
             var id = this.slides[index].firstChild.rev;
             var text = this.slides[index].firstChild.target,
                 targetElement = this.targetElement;
@@ -992,6 +994,8 @@
                     targetElement[0].appendChild(document.createTextNode(text));
                     targetElement[0].setAttribute("href", id);
                     targetElement[0].setAttribute("target", "_BLANK");
+                    targetElement[0].appendChild(img);
+
                 }
             }
         },

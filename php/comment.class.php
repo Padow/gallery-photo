@@ -19,7 +19,9 @@ Class Comment extends Connexion{
 				header("location: ./");
 			}
 			foreach ($rows as $key => $value) {	
-				echo '<img draggable="false" class="img-responsive img_center" src="'.$value['link'].'" alt="responsive">';
+				$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+				echo '<div class="share-content"><img draggable="false" class="img-responsive img_center" src="'.$value['link'].'" alt="responsive">';
+	  			echo '<div style="float:right" class="fb-share-button" data-href="'.$actual_link.'" data-layout="button"></div></div>';
 				echo '<div class="col-md-12 text-right"><h3>'.$value['name'].'</h3>';
 				echo '<h5>'.$value['info'].'</h5></div>';
 				echo '<span class="commentaire">Commentaire(s) : '.$value['nbcomment'].'</span><div class="col-md-12 sep"></div>';

@@ -410,7 +410,7 @@ div.mini{
 }
 
 .del-conf{
-  position: relative;
+  position: fixed;
   max-width: 200px;
   top: 40%;
   left: 50%;
@@ -425,4 +425,9 @@ div.mini{
     color: black;
     display: block;
     width: 100%;
+}
+
+.share-content{
+  width: 60%;
+  margin: 0 auto;
 }
