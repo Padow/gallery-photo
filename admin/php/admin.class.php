@@ -229,19 +229,27 @@ Class Admin extends Connexion{
 			foreach ($rows as $key => $value) {
 				$img = explode("/", $value['link']);
 				$filename = '{ "filename" : "'.end($img).'",';
-				$title = '"title": "' . $value['picture_name'] .'",';
+				$title = '"title": "' . $this->escape($value['picture_name']) .'",';
 				if ($value === end($rows)){
-					$description = '"description" : "'.$value['info'].'"}';
+					$description = '"description" : "'.$this->escape($value['info']).'"}';
 				}else{
-					$description = '"description" : "'.$value['info'].'"},';
+					$description = '"description" : "'.$this->escape($value['info']).'"},';
 				}
 				
 				fwrite($handle, $filename.$title.$description);
 			}
 			fwrite($handle, '],');
-			fwrite($handle, '"title": "'.$rows[0]['gallery_name'].'",');
-			fwrite($handle, '"description": "'.$rows[0]['subtitle'].'"}');
+			fwrite($handle, '"title": "'.$this->escape($rows[0]['gallery_name']).'",');
+			fwrite($handle, '"description": "'.$this->escape($rows[0]['subtitle']).'"}');
 			fclose($handle);
+		}
+
+		public function escape($value){
+			$ren = htmlspecialchars_decode($value, ENT_QUOTES);
+			$patterns = '/"/';
+			$replacements = '\"';
+			$escaped = preg_replace($patterns, $replacements, $ren);
+			return $escaped;
 		}
 
 }

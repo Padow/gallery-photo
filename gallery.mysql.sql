@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `about` (
   `id` int(11) NOT NULL,
   `content` longtext,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB COLLATE='utf8_unicode_ci';
 
 -- Data exporting was unselected.
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   KEY `FK_comments_pictures_2` (`pics`),
   CONSTRAINT `FK_comments_pictures` FOREIGN KEY (`gallery`) REFERENCES `pictures` (`gallery`),
   CONSTRAINT `FK_comments_pictures_2` FOREIGN KEY (`pics`) REFERENCES `pictures` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB COLLATE='utf8_unicode_ci';
 
 -- Data exporting was unselected.
 
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `galleries` (
   `thumb` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `folder` (`folder`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB COLLATE='utf8_unicode_ci';
 
 -- Data exporting was unselected.
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `pictures` (
   UNIQUE KEY `link` (`link`),
   KEY `FK__galleries` (`gallery`),
   CONSTRAINT `FK__galleries` FOREIGN KEY (`gallery`) REFERENCES `galleries` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB COLLATE='utf8_unicode_ci';
 
 -- Data exporting was unselected.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

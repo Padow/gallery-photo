@@ -224,51 +224,53 @@
 			$sql-> bindParam('folder', $folder, PDO::PARAM_STR);
 			$sql-> execute();
 			$rows = $sql->fetchAll(PDO::FETCH_ASSOC);
-			$picslistAdd = array();
-			$picslistRemove = array();
-			foreach ($rows as $value) {
-				$picslistAdd[] = $value['link'];
-				$picslistRemove[$value['id']] = $value['link'];
-			}
-
-			$folderpics = array();
-			$gallery_content = $this->getAllPics($content);
-			foreach ($gallery_content as $value) {
-				$folderpics[$value] = 'photos/'.$folder.'/'.$value;
-			}
-
-			if (empty($folderpics)) {
-				$this->deleteGallery($folder);
-				$this->delTree("photos/".$folder);
-			}
-
-
-			// check if pics have been added
-			$list = array();
-			$cpt = 0;
-			foreach ($folderpics as $key => $value) {
-				if (!in_array($value, $picslistAdd)) {
-					$id = $this->getGalleryId($folder);
-					$list[$cpt]['name'] = $key;
-					$list[$cpt]['link'] = $value;
-					$list[$cpt]['folder'] = $folder;
-					$list[$cpt]['gallery'] = $id;
-					$cpt++;
+			if($rows){
+				$picslistAdd = array();
+				$picslistRemove = array();
+				foreach ($rows as $value) {
+					$picslistAdd[] = $value['link'];
+					$picslistRemove[$value['id']] = $value['link'];
 				}
-			}
-			if ($list)
-				$this->addPicture($list);
 
-			//check if pics have been removed
-			$list2 = array();
-			foreach ($picslistRemove as $key => $value) {
-				if(!in_array($value, $folderpics)){
-					$list2[$value] = $key;
+				$folderpics = array();
+				$gallery_content = $this->getAllPics($content);
+				foreach ($gallery_content as $value) {
+					$folderpics[$value] = 'photos/'.$folder.'/'.$value;
 				}
-			}
-			if ($list2) {
-				foreach ($list2 as $key => $value) {
-					$this->removePic($value, $key);
+
+				if (empty($folderpics)) {
+					$this->deleteGallery($folder);
+					$this->delTree("photos/".$folder);
+				}
+
+
+				// check if pics have been added
+				$list = array();
+				$cpt = 0;
+				foreach ($folderpics as $key => $value) {
+					if (!in_array($value, $picslistAdd)) {
+						$id = $this->getGalleryId($folder);
+						$list[$cpt]['name'] = $key;
+						$list[$cpt]['link'] = $value;
+						$list[$cpt]['folder'] = $folder;
+						$list[$cpt]['gallery'] = $id;
+						$cpt++;
+					}
+				}
+				if ($list)
+					$this->addPicture($list);
+
+				//check if pics have been removed
+				$list2 = array();
+				foreach ($picslistRemove as $key => $value) {
+					if(!in_array($value, $folderpics)){
+						$list2[$value] = $key;
+					}
+				}
+				if ($list2) {
+					foreach ($list2 as $key => $value) {
+						$this->removePic($value, $key);
+					}
 				}
 			}
 
@@ -397,7 +399,7 @@
 
 		public function newGalleryJson($file){
 			$path = $file.'/metadata.json';
-			$info = json_decode(utf8_encode(file_get_contents($path)));
+			$info = json_decode(file_get_contents($path));
 			$title = htmlspecialchars($info->{'title'}, ENT_QUOTES);
 			$subtitle = htmlspecialchars($info->{'description'}, ENT_QUOTES);
 			$folder_name = preg_split("/\//", $file);
