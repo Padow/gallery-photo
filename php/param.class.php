@@ -29,6 +29,16 @@
  			echo '<h1>Galeries</h1>';
  	}
 
+	public function setContentSubTitle(){
+	 if ($this->getJson()){
+		 $content = $this->getJson()->{'content'}->{'subtitle'};
+	 }
+	 if ((isset($content)) && ($content !=""))
+		 echo '<p>'.$content.'</p>';
+	 else
+		 echo '<p>Subtitle</p>';
+	}
+
  	public function setFooter(){
  		if ($this->getJson()){
  			$contact = $this->getJson()->{'footer'}->{'contact'};

@@ -1,15 +1,24 @@
 function displayComs(){
   $('.galeries').css({"display": "none"});
+  $('.update').css({"display": "none"});
   $('.commentaires').css({"display": "block"});
   $('.commentaires').load('php/commentaires.content.php').fadeIn("slow");
 }
 
-
 function displayGals(id){
   $('.commentaires').css({"display": "none"});
+  $('.update').css({"display": "none"});
   $('.galeries').css({"display": "block"});
   $('.galeries').load('php/galeries.content.php', { "gallery": id } ).fadeIn("slow");
 
+}
+
+function update(){
+  $('.galeries').css({"display": "none"});
+  $('.commentaires').css({"display": "none"});
+  $('.update').css({"display": "block"});
+  $('.update').load('updating.html').fadeIn("slow");
+  $('.update').load('php/update.php').fadeIn("slow");
 }
 
 function scrollingTop(){

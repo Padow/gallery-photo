@@ -62,8 +62,8 @@ $param = new Param();
 	    </div><!-- /.container-fluid -->
 	  </nav>
 	  	<div class="container">
-	  		<a href="#" onclick="window.close();" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-chevron-left"></span> Retourner à la galerie</a>
-	  		<div class="sep"></div>
+<!--	  		<a href="#" onclick="window.close();" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-chevron-left"></span> Retourner à la galerie</a>-->
+<!--	  		<div class="sep"></div>-->
 	  		<?php
 	  			if (isset($_GET['gallery'])) {
 	  				$gallery = $_GET['gallery'];

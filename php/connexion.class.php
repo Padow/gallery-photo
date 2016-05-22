@@ -12,7 +12,7 @@
 		define("DBNAME", $array->{'sql'}->{'database'});
 	}
 	class Connexion{
-		private $_connexion;
+		protected $_connexion;
 		public function __construct(){
 			try
 			{

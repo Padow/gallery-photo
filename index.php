@@ -57,7 +57,8 @@ $param = new Param();
 	  </nav>
 	  	<div class="container">
 	  		<?php 
-          $param->setContentTitle();
+                $param->setContentTitle();
+                $param->setContentSubTitle();
 	  			$gall = new Gallery();
 	  		?>
 	  	</div>

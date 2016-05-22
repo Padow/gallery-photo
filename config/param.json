@@ -3,7 +3,8 @@
 		"pagename":"Gallery by padow"
 	},
 	"content":{
-		"title":"Gallery"
+		"title":"Gallery",
+	  	"subtitle":"mypics"
 	},
 	"footer":{
 		"contact":"p4d0w7@gmail.com"
