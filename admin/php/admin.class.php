@@ -648,7 +648,7 @@ Class Admin extends Connexion{
 		$title = htmlspecialchars($info->{'title'}, ENT_QUOTES);
 		$subtitle = htmlspecialchars($info->{'description'}, ENT_QUOTES);
 		$folder_name = preg_split("/\//", $file);
-		$folder_name = $folder_name[sizeof($folder_name)-1];
+		$folder_name = $folder_name[sizeof($folder_name)-1]; //to commit
 		if ($title == "") {
 			$title = $folder_name;
 		}
