@@ -33,7 +33,8 @@
 		private function connexion(){
 			switch (DBDRIVER) {
 				case 'sqlite3':
-					return new PDO('sqlite:/'.DBNAME.'.db');
+					$dbpath = substr(__DIR__, 0, -3);
+					return new PDO('sqlite:'.$dbpath.DBNAME.'.db');
 					break;
 				default:
 					return new PDO(''.DBDRIVER.':host='.DBHOST.';dbname='.DBNAME.'', DBUSER, DBPASSWORD);
