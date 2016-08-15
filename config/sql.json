@@ -1,6 +1,6 @@
 {
 	"sql":{
-		"_comments":"choose `pgsql` or `mysql` as driver",
+		"_comments":"choose `sqlite3`, `pgsql` or `mysql` as driver",
 		"driver":"mysql",
 		"host":"localhost",
 		"user":"root",
