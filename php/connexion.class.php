@@ -1,4 +1,4 @@
-<?php 
+<?php
 	$path = __DIR__;
 	$path = substr($path, 0, -3);
 	$path .= "config/sql.json";
@@ -16,8 +16,7 @@
 		public function __construct(){
 			try
 			{
-				
-			    @$connexion = new PDO(''.DBDRIVER.':host='.DBHOST.';dbname='.DBNAME.'', DBUSER, DBPASSWORD);
+			    @$connexion = $this->connexion();
 			    $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			    $this->_connexion = $connexion;
 			}
@@ -30,4 +29,15 @@
 			}
 			return $this->_connexion;
 		}
-	}	
+
+		private function connexion(){
+			switch (DBDRIVER) {
+				case 'sqlite3':
+					$dbpath = substr(__DIR__, 0, -3); // remove 'php' folder from the current path
+					return new PDO('sqlite:'.$dbpath.DBNAME.'.db');
+					break;
+				default:
+					return new PDO(''.DBDRIVER.':host='.DBHOST.';dbname='.DBNAME.'', DBUSER, DBPASSWORD);
+			}
+		}
+	}

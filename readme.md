@@ -25,7 +25,7 @@ Gallery Photo uses a number of open source projects to work properly:
 ## Server requirements
 * PHP 5.3
 * Apache 2.2
-* MySQL 5 or PostreSQL 9 
+* MySQL 5, PostreSQL 9 or SQLite 3
 
 > Also tested with Nginx 1.2.1 and MariaDB 10.1
 
@@ -52,6 +52,8 @@ location /config {
 or
 
 * gallery.pgsql.sql -> This is MADNESS
+
+or `cat gallery.sqlite3.sql | sqlite3 gallery.db` (`<dbname>.db`)
 
 as you wish.
 
