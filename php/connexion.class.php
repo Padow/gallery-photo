@@ -33,7 +33,7 @@
 		private function connexion(){
 			switch (DBDRIVER) {
 				case 'sqlite3':
-					$dbpath = substr(__DIR__, 0, -3);
+					$dbpath = substr(__DIR__, 0, -3); // remove 'php' folder from the current path
 					return new PDO('sqlite:'.$dbpath.DBNAME.'.db');
 					break;
 				default:
