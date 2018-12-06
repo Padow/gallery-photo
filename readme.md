@@ -51,9 +51,11 @@ location /config {
 
 or
 
-* gallery.pgsql.sql -> This is MADNESS
+* gallery.pgsql.sql
 
-or `cat gallery.sqlite3.sql | sqlite3 gallery.db` (`<dbname>.db`)
+or
+
+* `cat gallery.sqlite3.sql | sqlite3 gallery.db` (`<dbname>.db`)
 
 as you wish.
 
