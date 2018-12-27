@@ -59,16 +59,48 @@ or
 
 as you wish.
 
-### Configure *.json files.
+### Configure `*.json` files.
 
 * config/sql.json --> sets param for BDD
 * config/param.json --> sets title of the pages, footer contact link, title of the main page
 * config/admin.json --> sets login/password for the admin tools page
 
+## Docker
+
+- Build the Docker's image:
+
+```sh
+docker build -t gallery .
+```
+
+- Edit the `TODO` from the `docker-compose.yml`
+
+- Run the application:
+
+```sh
+docker-compose up
+# or
+docker-compose up -d
+```
+
+- Run database migration:
+
+```
+docker exec -it gallery-photo_postgres_1 ash
+
+/ # psql template1 postgres
+template1=# CREATE DATABASE gallery WITH ENCODING 'utf-8';
+CREATE DATABASE
+template1-# \q
+
+/ # psql gallery postgres
+====> Paste the `gallery.pgsql.sql` content
+```
+
 ## Add new gallery
 
-With an ftp client copy the whole folder containing photographies/images on your FTP into the `photos` folder (avoid using special chars for the folder name).
-Then go to your main page of the gallery.
+With an ftp client copy the whole folder containing photographies/images on your FTP into the `galleries` folder (avoid using special chars for the folder name).
+Then go to the admin page and click on update button.
 Thumbnails will be automatically generated.
 
 You can remove, or add a pic into a gallery, the database will automatically be updated.
@@ -77,7 +109,33 @@ With the admin tools you can modify title/subtitle of each galleries, likewise f
 
 Pics and galleries informations can be pre-set with the [mgn-meta project] tool.
 
+<details>
+<summary>metadata.json example</summary>
 
+
+```json
+{
+  "title": "BATEAUX en DÉTAILS I",
+  "description": "",
+  "images": [
+    {
+      "filename": "IMG_01.jpg",
+      "title": "PARE-BATTAGE VINTAGE",
+      "description": ""
+    },
+    {
+      "filename": "IMG_02.jpg",
+      "title": "FRANCE ",
+      "description": "La TRINITE sur MER"
+    }
+  ]
+}
+```
+
+
+</details>
+
+> Special note: if the gallery already contains a `thumbs` folder, the gallery won't be added.
 
 ## Remove gallery
 

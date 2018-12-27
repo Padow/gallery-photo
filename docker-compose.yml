@@ -15,21 +15,30 @@ services:
     image: gallery
     links:
       - postgres:postgres
+    environment:
+      # Database connection
+      DATABASE_DRIVER: pgsql
+      DATABASE_HOST: postgres
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_NAME: gallery
+      #
+      # Admin panel
+      ADMIN_USER: login # TODO update
+      ADMIN_PASSWORD: password # TODO update
+      #
+      # Gallery
+      PAGENAME: Gallery by padow # TODO update
+      TITLE: Gallery # TODO update
+      SUBTITLE: mypics # TODO update
+      CONTACT: p4d0w7@gmail.com # TODO update
     volumes:
-      - ./config:/var/www/html/config:ro # TODO replace with your config folder
-      - ./photos:/var/www/html/photos # TODO replace with your photos folder
+      # The place where your galleries are stored on the host
+      - ./galleries:/var/www/html/galleries # TODO replace with your galleries folder
+      # The place where extra assets (aka bio page) are stores on your host
+      - ./uploads:/var/www/html/uploads # TODO replace with your photos folder
     restart: always
 
-  # {
-  # 	"sql":{
-  # 		"_comments":"choose `sqlite3`, `pgsql` or `mysql` as driver",
-  # 		"driver":"pgsql",
-  # 		"host":"postgres",
-  # 		"user":"postgres",
-  # 		"password":"postgres",
-  # 		"database":"gallery"
-  # 	}
-  # }
   postgres:
     image: postgres:9-alpine
     environment:
