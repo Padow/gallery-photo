@@ -1,4 +1,7 @@
--- CREATE DATABASE gallery WITH ENCODING 'utf-8';
+-- psql template1 postgres
+-- =>  CREATE DATABASE gallery WITH ENCODING 'utf-8';
+--
+-- psql gallery postgres
 
 CREATE TABLE "about" (
   "id" INTEGER NOT NULL ,
